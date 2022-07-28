@@ -1,0 +1,66 @@
+Collaborama is user based website for artists to login and interact online with one another. Users personalize their user profiles, and help build an online community among artists.
+
+1. install dependencies
+$npm install
+
+2. set up envirnment variables with stormpath
+$ export STORMPATH_CLIENT_APIKEY_ID=1SPLWQ9L8L1GKR948TPY1X3Z8
+$ export STORMPATH_CLIENT_APIKEY_SECRET=UEoVoGQaPT+YLL/164E83ixOk8H9bu3F62BSRhtr208
+$ export STORMPATH_APPLICATION_HREF=https://api.stormpath.com/v1/applications/2Qtoa6BUkRCCOJawhnITwE
+
+3.Create the database and tables
+CREATE DATABASE collaborama;
+USE collaborama;
+
+CREATE TABLE IF NOT EXISTS callouts(
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `userid` VARCHAR(256) NULL,
+  `message` VARCHAR(256) NULL,
+  `city` VARCHAR(45) NULL,
+  `genre` VARCHAR(45) NULL,
+  `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `name` VARCHAR (45) NULL,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE IF NOT EXISTS songs(
+id INT NOT NULL AUTO_INCREMENT,
+soundcloudurl VARCHAR(255) NULL,
+songname VARCHAR(255) NULL,
+genre VARCHAR(45) NULL,
+releasedate DATETIME NULL,
+uploaddate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+userid VARCHAR(256) NULL,
+PRIMARY KEY (id));
+
+CREATE TABLE IF NOT EXISTS conversations(
+id INT(10) NOT NULL AUTO_INCREMENT,
+timeInitiated DATETIME NOT NULL DEFAULT NOW(),
+PRIMARY KEY (id));
+
+CREATE TABLE IF NOT EXISTS conversants(
+userID VARCHAR(255) NOT NULL,
+conversationID INT(10) NOT NULL,
+PRIMARY KEY (userID, conversationID));
+
+CREATE TABLE IF NOT EXISTS messages(
+userID VARCHAR(255) NOT NULL,
+id INT(10) NOT NULL AUTO_INCREMENT,
+conversationID INT(10) NOT NULL,
+timeSent DATETIME NOT NULL DEFAULT NOW(),
+content VARCHAR(50) NOT NULL default "message",
+PRIMARY KEY (id));
+
+CREATE TABLE IF NOT EXISTS users(
+id VARCHAR(255) NOT NULL,
+firstName VARCHAR(25) NOT NULL,
+lastName VARCHAR(25) NOT NULL,
+city VARCHAR (45) NOT NULL,
+genre VARCHAR (45) NOT NULL,
+PRIMARY KEY (id));
+
+
+4. Change database password in server.js to match you're own sql persmissions 
+
+
+5. run server locally 
+$node server.js
